@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="formulario">
     <form @submit.prevent="agregarNombre">
-      <input v-model="nuevoNombre" placeholder="Ingresa un Nombre" required>
-      <input v-model="nuevoApellido" placeholder="Ingrea un Apellido" required>
-      <button type="submit">Agregar</button>
+      <input v-model="nuevoNombre" placeholder="Ingresa tu nombre" required>
+      <input v-model="nuevoApellido" placeholder="Ingresa tu apellido" required>
+      <button type="submit">Agregar nombre</button>
     </form>
 
     <ul>
@@ -17,7 +17,6 @@
 </template>
 
 <script setup>
-
 import { ref } from 'vue';
 
 const nuevoNombre = ref('');
@@ -26,29 +25,73 @@ const names = ref([]);
 
 function agregarNombre() {
   if (nuevoNombre.value && nuevoApellido.value) {
-    names.value.push({ nombre: capitalLetter(nuevoNombre.value), apellido: capitalLetter(nuevoApellido.value) });
+    names.value.push({ nombre: capitalize(nuevoNombre.value), apellido: capitalize(nuevoApellido.value) });
     nuevoNombre.value = '';
     nuevoApellido.value = '';
   }
 }
 
 function editarNombre(index) {
-  const editarNombre = prompt("Ingrese el nuevo nombre:");
-  const editarApellido = prompt("Ingrese el nuevo apellido:");
-  
-  if (editarNombre && editarApellido) {
-    names.value[index].nombre = capitalLetter(editarNombre);
-    names.value[index].apellido = capitalLetter(editarApellido);
+  const editedName = prompt('Ingrese el nuevo nombre:');
+  const editedLastName = prompt('Ingrese el nuevo apellido:');
+  if (editedName && editedLastName) {
+    names.value[index].nombre = capitalize(editedName);
+    names.value[index].apellido = capitalize(editedLastName);
   }
 }
 
 function borrarNombre(index) {
-  if (index >= 0 && index < names.value.length) {
-    names.value.splice(index, 1);
-  }
+  names.value.splice(index, 1);
 }
 
-function capitalLetter(string) {
+function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 </script>
+
+<style scoped>
+form {
+  margin-bottom: 20px;
+}
+input {
+  margin-right: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  border: none;
+}
+button {
+  padding: 5px 10px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: darkslateblue;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  margin-bottom: 10px;
+}
+li button {
+  margin-left: 10px;
+}
+.formulario {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 30vh;
+  background-color: lightblue;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 10px;
+  position: absolute;
+  top: calc(50% - 10px);
+  left: calc(50% - 10px);
+  transform: translate(-50%, -50%);
+}
+</style>
